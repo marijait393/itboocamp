@@ -16,11 +16,9 @@ public class AdvancedSearchPages {
 	public AdvancedSearchPages(WebDriver driver) {
 		this.driver = driver;
 	}
-	
 
 	// ELEMENTS
-	
-	
+
 	private static WebElement anyFieldMenu() {
 		return driver.findElement(By.name("any_type"));
 	}
@@ -105,16 +103,16 @@ public class AdvancedSearchPages {
 		return driver.findElement(By.name("optional_field3_q"));
 	}
 
-	private static WebElement year() {
+	private static WebElement setYear() {
 		return driver.findElement(By.name("date_year"));
 	}
 
-	private static WebElement month() {
-		return driver.findElement(By.name("date_year"));
+	private static WebElement setMonth() {
+		return driver.findElement(By.name("date_month"));
 	}
 
-	private static WebElement day() {
-		return driver.findElement(By.name("date_year"));
+	private static WebElement setDay() {
+		return driver.findElement(By.name("date_day"));
 	}
 
 	private static WebElement yearFrom() {
@@ -210,4 +208,35 @@ public class AdvancedSearchPages {
 		return driver.findElement(By.cssSelector("#rawform > div:nth-child(5) > input.btn.btn-primary"));
 	}
 
+	private static WebElement newSearchBar() {
+		return driver.findElement(By.cssSelector("#search-bar-2"));
+	}
+	// ACTIONS
+
+	
+	
+	public void setYaer(String i) {
+		Select dropDownMenu = new Select(setYear());
+		dropDownMenu.selectByVisibleText(i);
+	}
+
+	public void setMonth(String i) {
+		Select dropDownMenu = new Select(setMonth());
+		dropDownMenu.selectByVisibleText(i);
+	}
+
+	public void setDay(String i) {
+		Select dropDownMenu = new Select(setDay());
+		dropDownMenu.selectByVisibleText(i);
+	}
+
+	public void clickOnSearchButton1() {
+		searchButton1().click();
+	}
+	
+	public String getTextSearchBar() {
+		return newSearchBar().getText();
+	}
+	
+	
 }

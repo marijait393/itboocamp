@@ -3,12 +3,12 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="packageTests.TopCollectionsMainPageTests">
+      <class name="packageTests.SignIntest">
         <methods>
+          <include name="sigIn"/>
           <include name="setup"/>
-          <include name="topCollectionItemResultsTest"/>
         </methods>
-      </class> <!-- packageTests.TopCollectionsMainPageTests -->
+      </class> <!-- packageTests.SignIntest -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

@@ -59,9 +59,12 @@ import org.openqa.selenium.WebElement;
 	}
 	
 	private static WebElement searchBar() {
-		return driver.findElement(By.cssSelector("body.navia.tv911.navia.content-box.responsive-playing:nth-child(2) div:nth-child(1) div.navbar.navbar-inverse.navbar-static-top ul.nav.navbar-nav.navbar-main:nth-child(2) li.dropdown.dropdown-ia.pull-right:nth-child(9) > div.searchbar:nth-child(2)"));
+		return driver.findElement(By.cssSelector("#search-bar-2"));
 	}  
 	
+	private static WebElement advancedSearchLink() {
+		return driver.findElement(By.cssSelector("#navbar_search_options > a"));
+	}
 	
 	//Username when logged
 	private static WebElement username() {
@@ -103,5 +106,11 @@ import org.openqa.selenium.WebElement;
 	 public void sendTextSearchBar(String SearchTerm) {
 		 searchBar().sendKeys(SearchTerm);
 	 }
-	 
+	 public WebElement getAdvancedSearchLink()  {
+		 return advancedSearchLink();
+	 }
+	 public void clickOnadvancedSearchLink() {
+		 advancedSearchLink().click();
+		 
+	 }
 }

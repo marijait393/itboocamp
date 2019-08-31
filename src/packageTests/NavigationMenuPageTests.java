@@ -9,6 +9,7 @@ import org.testng.annotations.Test;
 
 import packagePages.BaseClass;
 import packagePages.PageURLs;
+import packagePages.ArchivePages.AdvancedSearchPages;
 import packagePages.ArchivePages.LoginPage;
 import packagePages.ArchivePages.MainPage;
 import packagePages.ArchivePages.UploadPage;
@@ -16,14 +17,17 @@ import packagePages.NavigationMenu.NavigationMenu1;
 import packagePages.NavigationMenu.NavigationMenu2;
 
 public class NavigationMenuPageTests {
-	
-	
-	private static final String EMAIL = "foo@gmail.com";
-	private static final String PASSWORD = "bar";
+
+	private static final String YEAR = "2015";
+	private static final String MONTH = "09";
+	private static final String DAY = "09";
 
 	WebDriver driver;
 	NavigationMenu1 nm1;
 	NavigationMenu2 nm2;
+	AdvancedSearchPages as;
+	MainPage mp;
+	LoginPage lp;
 
 	@BeforeTest
 	public void setup() {
@@ -32,16 +36,17 @@ public class NavigationMenuPageTests {
 		driver = new FirefoxDriver();
 	}
 
-	@Test //(priority = 2)
+	@Test(priority = 2)
 	public void navigationMenuTest() {
 
 		driver.navigate().to(PageURLs.MAIN_PAGE);
 		nm1 = new NavigationMenu1(driver);
 		nm2 = new NavigationMenu2(driver);
+		mp = new MainPage(driver);
 
-		new NavigationMenu2(driver).clickOnTextIcon();
+		nm2.clickOnTextIcon();
 
-		new NavigationMenu1(driver).clickOnTextFeaturedElements(0);
+		nm1.clickOnTextFeaturedElements(0);
 
 		String firstUrl = driver.getCurrentUrl();
 
@@ -54,52 +59,63 @@ public class NavigationMenuPageTests {
 		Assert.assertEquals(firstUrl, secondUrl);
 
 	}
-	@Test //(priority = 4)
-	public void uploadTest() throws Exception{
+
+	@Test(priority = 4)
+	public void uploadTest() throws Exception {
 
 		driver.navigate().to(PageURLs.MAIN_PAGE);
 
-		new UploadPage(driver).clickOnUploadButton();		
-		
+		new UploadPage(driver).clickOnUploadButton();
+
 		Assert.assertTrue("Log in or Sign up".contains(new UploadPage(driver).loginOrSignUpGetText()));
 
 	}
-	
-	@Test //(priority = 6)
+
+	@Test(priority = 6)
 	public void forgotPasswordTest() throws Exception {
+
+		nm2 = new NavigationMenu2(driver);
+		lp = new LoginPage(driver);
 
 		new BaseClass(driver).implicitWait();
 
-		
 		driver.navigate().to(PageURLs.MAIN_PAGE);
 
-		new NavigationMenu2(driver).clickOnSignInButton();
-		
-		//if (new LoginPage(driver).getForgotPassword().isDisplayed()) {
-		//	System.out.println("Element is Visible");
-		//} else {
-		//	System.out.println("Element is InVisible");
-	//	}
-	
+		nm2.clickOnSignInButton();
+
 		Assert.assertTrue(new LoginPage(driver).getErrorMessage().isDisplayed());
-		
-		new LoginPage(driver).clickOnSignUp();
-		
-		new LoginPage(driver).clickOnTermOfConditions();
-				
-		Thread.sleep(3000);
-		
-		new LoginPage(driver).switchToNextWindow();
+
+		lp.clickOnSignUp();
+
+		lp.clickOnTermOfConditions();
+
+		lp.switchToNextWindow();
 		
 		Thread.sleep(3000);
 		
-		new LoginPage(driver).switchToNextWindow();
-		
-		System.out.println(driver.getCurrentUrl());
-				
+		lp.switchToNextWindow();
+
 		Assert.assertTrue(driver.getCurrentUrl().contains("terms"));
-		
+
 	}
 
-}
+	@Test(priority = 8)
+	public void navBarSearchTest() throws Exception {
 
+		driver.navigate().to("https://archive.org/details/movies");
+
+		as = new AdvancedSearchPages(driver);
+		nm2 = new NavigationMenu2(driver);
+
+		nm2.clickOnSearchBar();
+		Assert.assertTrue(nm2.getAdvancedSearchLink().isDisplayed());
+		nm2.clickOnadvancedSearchLink();
+		Assert.assertTrue(driver.getCurrentUrl().contains("advancedsearch"));
+		as.setYaer(YEAR);
+		as.setMonth(MONTH);
+		as.setDay(DAY);
+		as.clickOnSearchButton1();
+		Assert.assertTrue(driver.getCurrentUrl().contains("?query=date%3A2015-09-09"));
+
+	}
+}

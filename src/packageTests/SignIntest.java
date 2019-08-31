@@ -1,18 +1,14 @@
 package packageTests;
 
-import java.util.List;
-
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
+import packagePages.BaseClass;
 import packagePages.PageURLs;
 import packagePages.ArchivePages.LoginPage;
-import packagePages.ArchivePages.MainPage;
 import packagePages.NavigationMenu.NavigationMenu2;
 
 
@@ -22,6 +18,10 @@ public class SignIntest {
 	private static final String PASSWORD = "bar";
 
 	WebDriver driver;
+	NavigationMenu2 nm2;
+	LoginPage lp;
+	BaseClass bc;
+	
 	
 	@BeforeTest
 	public void setup() {
@@ -30,16 +30,25 @@ public class SignIntest {
 		driver = new FirefoxDriver();
 	}
 
-	@Test //(priority = 5)
+	@Test (priority = 5)
 	public void sigIn() throws Exception {
 		
+		lp = new LoginPage(driver);
+		nm2 = new NavigationMenu2(driver);
+		bc = new BaseClass(driver);
+		
 		driver.navigate().to(PageURLs.MAIN_PAGE);
-        new NavigationMenu2(driver).clickOnSignInButton();
-        Assert.assertTrue(new LoginPage(driver).getLoginButton().isDisplayed());
-        new LoginPage(driver).sendKeysEmail(EMAIL);
-        new LoginPage(driver).SendKeysPassword(PASSWORD);
-        new LoginPage(driver).clickOnLogin();
-        Assert.assertTrue(new LoginPage(driver).getErrorMessage().isDisplayed());
+        nm2.clickOnSignInButton();
+        
+        Assert.assertTrue(lp.getLoginButton().isDisplayed());
+        
+        lp.sendKeysEmail(EMAIL);
+        lp.SendKeysPassword(PASSWORD);
+        lp.clickOnLogin();
+        
+        bc.elementToAppear(lp.getErrorMessage());
+        
+        Assert.assertTrue(lp.getErrorMessage().isDisplayed());
 
   }
 }

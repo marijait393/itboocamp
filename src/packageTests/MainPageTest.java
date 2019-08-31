@@ -12,13 +12,14 @@ import packagePages.PageURLs;
 import packagePages.ArchivePages.LoginPage;
 import packagePages.ArchivePages.MainPage;
 
-
 public class MainPageTest {
-	
+
 	public static final String SEARCH_TERM = "qa";
 
 	WebDriver driver;
-	
+	MainPage mp;
+	LoginPage lp;
+	BaseClass bc;
 
 	@BeforeTest
 	public void setup() {
@@ -27,14 +28,18 @@ public class MainPageTest {
 		driver = new FirefoxDriver();
 	}
 
-	@Test //(priority = 3)
+	@Test(priority = 3)
 	public void searchFieldTest() throws Exception {
 
+		lp = new LoginPage(driver);
+		mp = new MainPage(driver);
+		bc = new BaseClass(driver);
+
 		new BaseClass(driver).implicitWait();
-		
+
 		driver.navigate().to(PageURLs.MAIN_PAGE);
 
-		new MainPage(driver).clickOnSearchField();
+		mp.clickOnSearchField();
 
 		if (new MainPage(driver).GetRadioButton(0).isDisplayed()) {
 			System.out.println("Element is Visible");
@@ -42,20 +47,14 @@ public class MainPageTest {
 			System.out.println("Element is InVisible");
 		}
 
-	
-		
-		new MainPage(driver).sendTextSearchField(SEARCH_TERM);
+		mp.sendTextSearchField(SEARCH_TERM);
 
-		new MainPage(driver).clickOnGoButton();
+		mp.clickOnGoButton();
 
 		Thread.sleep(3000);
-		
-		new LoginPage(driver).switchToNextWindow();
-		
+
+		lp.switchToNextWindow();
+
 		Assert.assertTrue(driver.getCurrentUrl().contains("?query=qa"));
 	}
 }
-
-	
-
-

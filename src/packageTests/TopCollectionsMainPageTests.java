@@ -17,7 +17,7 @@ import packagePages.ArchivePages.MainPage;
 public class TopCollectionsMainPageTests {
 
 	WebDriver driver;
-	MainPage mp = new MainPage(driver);
+	MainPage mp;
 
 
 	@BeforeTest
@@ -27,9 +27,11 @@ public class TopCollectionsMainPageTests {
 		driver = new FirefoxDriver();
 	}
 
-	@Test  //(priority = 0)
+	@Test  (priority = 0)
 	public void topCollectionItemsTest() throws Exception {
-
+		
+		mp = new MainPage(driver);
+		
 		driver.navigate().to(PageURLs.MAIN_PAGE);
 
 		Assert.assertTrue(new MainPage(driver).getTopCollectionSize() >= 20);
@@ -45,7 +47,7 @@ public class TopCollectionsMainPageTests {
 		}
 	}
 
-	@Test  //(priority = 1)
+	@Test  (priority = 1)
 	public void topCollectionItemResultsTest() throws Exception {
 
 		WebElement number = mp.getCollections().get(0);
@@ -60,9 +62,19 @@ public class TopCollectionsMainPageTests {
 
 		String[] views2 = results.getText().split("[\\s]");
 
-		System.out.println(views2[0]);
+		String num1 = views2[0];
+		String num2 = views1[0];
+		
+		String newNum1 = num1.replace(",", "");
+		String newNum2 = num2.replace(",", "");
+		
+		int result1 = Integer.valueOf(newNum1);
+		int result2 = Integer.valueOf(newNum2);
 
-		Assert.assertTrue(views2[0].equals(views1[0]), "Results are not the same.");
+		int diference = result1 - result2;
+
+		Assert.assertTrue(diference > 100);
+		
 	}
 
 }
